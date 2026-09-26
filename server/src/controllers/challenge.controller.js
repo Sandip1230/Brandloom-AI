@@ -9,7 +9,7 @@ module.exports = async function challengeController(request, response, next) {
   }
 
   try {
-    const result = await runPromptStage(promptTemplate, { context });
+    const result = await runPromptStage('challenge', promptTemplate, { context });
     return response.json(result);
   } catch (error) {
     return handleStageError('challenge', error, response, next);

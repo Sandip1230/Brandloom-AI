@@ -2,11 +2,11 @@ import { Link, useLocation } from "react-router-dom";
 import ThemeToggle from "./ThemeToggle.jsx";
 
 const NAV_ITEMS = [
-  { label: "Dashboard", icon: "grid" },
-  { label: "Projects", icon: "folder" },
-  { label: "Brand Kits", icon: "sparkle" },
-  { label: "Templates", icon: "layout" },
-  { label: "Community", icon: "users" },
+  { label: "Dashboard", icon: "grid", to: "/workflow" },
+  { label: "Projects", icon: "folder", to: "/projects" },
+  { label: "Brand Kits", icon: "sparkle", to: "/brand-kits" },
+  { label: "Templates", icon: "layout", to: "/templates" },
+  { label: "Community", icon: "users", to: "/community" },
 ];
 
 function NavIcon({ name }) {
@@ -65,55 +65,77 @@ function NavIcon({ name }) {
 
 export default function Sidebar() {
   const location = useLocation();
-  const isWorkflowActive = location.pathname.startsWith("/workflow");
 
   return (
-    <aside className="flex h-screen w-64 shrink-0 flex-col border-r border-[var(--border)] bg-[var(--sidebar-bg)] px-4 py-6">
+    <aside className="flex h-full w-64 shrink-0 flex-col overflow-y-auto rounded-2xl border border-[var(--sidebar-border)] bg-[var(--sidebar-bg)] px-4 py-4 text-[var(--sidebar-text)] shadow-sm">
       <div className="flex items-center gap-2 px-2">
         <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[var(--accent-from)] to-[var(--accent-to)] text-sm font-bold text-white">
           B
         </span>
-        <span className="text-lg font-semibold text-[var(--text)]">Brandloom</span>
+        <span className="text-lg font-semibold text-white">Brandloom</span>
       </div>
 
       <Link
         to="/workflow"
-        className="mt-6 flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-[var(--accent-from)] to-[var(--accent-to)] px-4 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90"
+        style={{ backgroundImage: "var(--btn-gradient)" }}
+        className="mt-5 flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-white shadow-[0_6px_18px_-6px_rgba(124,58,237,0.6)] transition-opacity hover:opacity-90"
       >
         + New Project
       </Link>
 
-      <nav className="mt-6 flex flex-1 flex-col gap-1">
+      <nav className="mt-5 flex flex-col gap-1">
         {NAV_ITEMS.map((item) => {
-          const isActive = item.label === "Dashboard" && isWorkflowActive;
+          const isActive =
+            item.to === "/workflow"
+              ? location.pathname.startsWith("/workflow")
+              : location.pathname === item.to;
           return (
-            <button
+            <Link
               key={item.label}
-              type="button"
-              disabled
-              title="Coming soon"
+              to={item.to}
               className={
-                "flex items-center gap-3 rounded-lg px-3 py-2 text-left text-sm cursor-not-allowed " +
+                "flex items-center gap-3 rounded-lg px-3 py-2 text-left text-sm transition-colors " +
                 (isActive
-                  ? "bg-[var(--surface-2)] text-[var(--text)]"
-                  : "text-[var(--text-soft)] opacity-70")
+                  ? "bg-white/10 text-white"
+                  : "text-[var(--sidebar-text-soft)] hover:bg-white/5 hover:text-white")
               }
             >
               <NavIcon name={item.icon} />
               {item.label}
-            </button>
+            </Link>
           );
         })}
       </nav>
 
-      <div className="mt-auto flex items-center justify-between border-t border-[var(--border)] pt-4">
+      <div className="flex-1" />
+
+      <div className="rounded-2xl border border-[var(--sidebar-border)] bg-white/5 p-4">
+        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[var(--accent-from)] to-[var(--accent-to)] text-sm">
+          👑
+        </span>
+        <p className="mt-3 text-sm font-semibold leading-snug text-white">
+          Turn ideas into powerful brands.
+        </p>
+        <p className="mt-1.5 text-xs leading-relaxed text-[var(--sidebar-text-soft)]">
+          AI-powered branding for founders, creators and communities.
+        </p>
+        <Link
+          to="/templates"
+          className="mt-3 flex items-center justify-center gap-1.5 rounded-lg border border-amber-400/50 px-3 py-2 text-xs font-medium text-white transition-colors hover:border-amber-300"
+        >
+          Explore Templates
+          <span aria-hidden="true">→</span>
+        </Link>
+      </div>
+
+      <div className="mt-3 flex shrink-0 items-center justify-between border-t border-[var(--sidebar-border)] pt-3">
         <div className="flex items-center gap-2">
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--surface-2)] text-xs font-semibold text-[var(--text)]">
+          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white">
             G
           </span>
           <div>
-            <p className="text-sm font-medium leading-tight text-[var(--text)]">Guest</p>
-            <p className="text-xs leading-tight text-[var(--text-soft)]">Free Plan</p>
+            <p className="text-sm font-medium leading-tight text-white">Guest</p>
+            <p className="text-xs leading-tight text-[var(--sidebar-text-soft)]">Free Plan</p>
           </div>
         </div>
         <ThemeToggle />

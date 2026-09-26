@@ -1,10 +1,13 @@
+import { useNavigate } from "react-router-dom";
 import { useBrand } from "../context/BrandContext.jsx";
 import { STAGES } from "../lib/stages.js";
 
 export default function StagePanel({ stageKey, children }) {
   const { brand, runStage, pendingStage, stageErrors, advance, goBack } = useBrand();
+  const navigate = useNavigate();
   const index = STAGES.findIndex((stage) => stage.key === stageKey);
   const meta = STAGES[index];
+  const isLastStage = index === STAGES.length - 1;
   const output = brand.stageOutputs[stageKey];
   const submitting = pendingStage === stageKey;
   const error = stageErrors[stageKey];
@@ -14,6 +17,18 @@ export default function StagePanel({ stageKey, children }) {
       await runStage(stageKey);
     } catch {
       // error is already captured in stageErrors — nothing else to do here
+    }
+  }
+
+  function handleContinue() {
+    // Deliver is the final stage - there's no "next" stage to advance to,
+    // so advance(stageKey) was silently doing nothing and the button
+    // looked broken. On the last stage, send the user to their saved
+    // projects list instead, where the finished brand kit lives.
+    if (isLastStage) {
+      navigate("/projects");
+    } else {
+      advance(stageKey);
     }
   }
 
@@ -78,10 +93,10 @@ export default function StagePanel({ stageKey, children }) {
           {output && (
             <button
               type="button"
-              onClick={() => advance(stageKey)}
+              onClick={handleContinue}
               className="rounded-lg bg-gradient-to-r from-[var(--accent-from)] to-[var(--accent-to)] px-6 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90"
             >
-              Continue →
+              {isLastStage ? "Finish → Go to Projects" : "Continue →"}
             </button>
           )}
         </div>

@@ -9,7 +9,7 @@ module.exports = async function deliverController(request, response, next) {
   }
 
   try {
-    const result = await runPromptStage(promptTemplate, { context });
+    const result = await runPromptStage('deliver', promptTemplate, { context });
     return response.json(result);
   } catch (error) {
     return handleStageError('deliver', error, response, next);

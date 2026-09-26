@@ -9,7 +9,7 @@ module.exports = async function understandController(request, response, next) {
   }
 
   try {
-    const result = await runPromptStage(promptTemplate, { brief: brief.trim() });
+    const result = await runPromptStage('understand', promptTemplate, { brief: brief.trim() });
     return response.json(result);
   } catch (error) {
     return handleStageError('understand', error, response, next);

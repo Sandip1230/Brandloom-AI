@@ -19,14 +19,28 @@ export default function ConsistencyChecker({ findings = [], consistent = false }
       </div>
 
       {findings.length > 0 && (
-        <ul className="mt-4 space-y-2">
+        <ul className="mt-4 space-y-4">
           {findings.map((finding, index) => (
             <li
               key={index}
-              className="flex gap-2 rounded-lg border border-[var(--border)] px-3 py-2 text-sm text-[var(--text)]"
+              className="rounded-xl border border-[var(--border)] p-4"
             >
-              <span className="text-[var(--accent-solid)]">—</span>
-              {finding}
+              <p className="text-sm font-semibold text-[var(--text)]">{finding.issue}</p>
+
+              <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <div className="rounded-lg border border-red-500/25 bg-red-500/5 p-3">
+                  <span className="text-[10px] font-bold uppercase tracking-wide text-red-500">Before</span>
+                  <p className="mt-1 text-sm text-[var(--text)]">{finding.before}</p>
+                </div>
+                <div className="rounded-lg border border-emerald-500/25 bg-emerald-500/5 p-3">
+                  <span className="text-[10px] font-bold uppercase tracking-wide text-emerald-500">After</span>
+                  <p className="mt-1 text-sm text-[var(--text)]">{finding.after}</p>
+                </div>
+              </div>
+
+              {finding.rationale && (
+                <p className="mt-2 text-xs italic text-[var(--text-soft)]">{finding.rationale}</p>
+              )}
             </li>
           ))}
         </ul>

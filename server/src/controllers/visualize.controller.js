@@ -9,7 +9,7 @@ module.exports = async function visualizeController(request, response, next) {
   }
 
   try {
-    const result = await runPromptStage(promptTemplate, { context });
+    const result = await runPromptStage('visualize', promptTemplate, { context });
     return response.json(result);
   } catch (error) {
     return handleStageError('visualize', error, response, next);

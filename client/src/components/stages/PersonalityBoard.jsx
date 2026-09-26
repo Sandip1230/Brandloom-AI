@@ -4,6 +4,8 @@ export default function PersonalityBoard({
   namingDirections = [],
   voice,
   tagline,
+  selectedName,
+  onSelectName,
 }) {
   if (!traits.length) {
     return <p className="text-sm text-[var(--text-soft)]">Personality traits will appear here.</p>;
@@ -57,15 +59,42 @@ export default function PersonalityBoard({
       {namingDirections.length > 0 && (
         <div>
           <span className="text-xs font-medium uppercase tracking-wide text-[var(--text-soft)]">
-            Naming Directions
+            Naming Directions — pick one to carry forward
           </span>
-          <ul className="mt-2 space-y-1">
-            {namingDirections.map((direction, index) => (
-              <li key={`${direction}-${index}`} className="text-sm text-[var(--text)]">
-                • {direction}
-              </li>
-            ))}
+          <p className="mt-1 text-xs text-[var(--text-soft)]">
+            The Challenge and Deliver stages flag an unresolved brand identity until a name is
+            picked here.
+          </p>
+          <ul className="mt-2 space-y-2">
+            {namingDirections.map((direction, index) => {
+              // Directions look like "Name - rationale text". Pull out just the
+              // name so it can be compared/stored/shown on its own elsewhere.
+              const name = direction.split(/[-–—]/)[0].trim();
+              const isSelected = selectedName === name;
+              return (
+                <li key={`${direction}-${index}`}>
+                  <button
+                    type="button"
+                    onClick={() => onSelectName?.(name)}
+                    className={
+                      "w-full rounded-xl border px-4 py-3 text-left text-sm transition-colors " +
+                      (isSelected
+                        ? "border-[var(--accent-solid)] bg-[var(--accent-solid)]/10 text-[var(--text)]"
+                        : "border-[var(--border)] text-[var(--text)] hover:border-[var(--accent-solid)]/60")
+                    }
+                  >
+                    <span className="mr-2">{isSelected ? "●" : "○"}</span>
+                    {direction}
+                  </button>
+                </li>
+              );
+            })}
           </ul>
+          {selectedName && (
+            <p className="mt-2 text-sm text-[var(--accent-solid)]">
+              Selected: <strong>{selectedName}</strong>
+            </p>
+          )}
         </div>
       )}
 

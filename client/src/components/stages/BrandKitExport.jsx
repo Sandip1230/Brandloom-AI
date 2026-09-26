@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const TABS = ["Overview", "Position", "Personality", "Visual"];
+const TABS = ["Overview", "Position", "Personality", "Visual", "Launch"];
 
 export default function BrandKitExport({ brandKit }) {
   const [activeTab, setActiveTab] = useState(TABS[0]);
@@ -9,7 +9,7 @@ export default function BrandKitExport({ brandKit }) {
     return <p className="text-sm text-[var(--text-soft)]">Your finished brand kit will appear here.</p>;
   }
 
-  const { summary, position = {}, personality = {}, visual = {}, openGaps = [] } = brandKit;
+  const { brandName, summary, position = {}, personality = {}, visual = {}, launch = {}, openGaps = [] } = brandKit;
 
   function downloadKit() {
     const file = new Blob([JSON.stringify(brandKit, null, 2)], { type: "application/json" });
@@ -23,6 +23,11 @@ export default function BrandKitExport({ brandKit }) {
 
   return (
     <div>
+      {brandName && (
+        <p className="mb-2 text-xs font-medium uppercase tracking-wide text-[var(--accent-solid)]">
+          {brandName}
+        </p>
+      )}
       <div className="rounded-xl border border-[var(--accent-solid)]/30 bg-[var(--surface-2)] px-5 py-4">
         <p className="text-sm text-[var(--text)]">{summary}</p>
       </div>
@@ -72,6 +77,7 @@ export default function BrandKitExport({ brandKit }) {
         {activeTab === "Position" && <KeyValueGrid data={position} />}
         {activeTab === "Personality" && <KeyValueGrid data={personality} />}
         {activeTab === "Visual" && <KeyValueGrid data={visual} />}
+        {activeTab === "Launch" && <KeyValueGrid data={launch} />}
       </div>
 
       <div className="mt-8 flex justify-end">

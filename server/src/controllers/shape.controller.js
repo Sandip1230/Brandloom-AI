@@ -9,7 +9,7 @@ module.exports = async function shapeController(request, response, next) {
   }
 
   try {
-    const result = await runPromptStage(promptTemplate, { context });
+    const result = await runPromptStage('shape', promptTemplate, { context });
     return response.json(result);
   } catch (error) {
     return handleStageError('shape', error, response, next);

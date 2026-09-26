@@ -11,8 +11,19 @@ Brandloom is organized as a Vite/React client and an Express API. The client own
 5. **Challenge** identifies generic patterns and suggests alternatives.
 6. **Deliver** assembles and checks the exportable brand kit.
 
-Each stage consumes the brief and relevant prior outputs. Controllers are currently scaffolded and return `501` until stage orchestration and schema validation are implemented.
+Each stage consumes the brief and relevant prior outputs. Every controller rejects a request that is missing its required prior stage (e.g. Position requires an `understand` result in `context`) before calling the AI client at all.
+
+## AI call + validation flow
+
+`server/src/ai/runStage.js` is the shared pipeline every stage controller calls through:
+
+1. Fill the stage's prompt template (`server/src/ai/prompts`) with the brief/context.
+2. Call the AI client (`server/src/ai/client.js`, OpenRouter) with the shared system prompt.
+3. Extract a JSON object from the raw response (tolerates stray markdown fences).
+4. Validate the parsed object against that stage's schema (`server/src/ai/schemas`).
+5. If parsing or validation fails, retry once with the specific error appended to the prompt.
+6. If it still fails, the controller returns `502` with a generic "unusable response" message; a missing API key returns `500`.
 
 ## Local development
 
-Install dependencies with `npm install` in the root, `client`, and `server` directories. Configure `server/.env` from `.env.example`, then run `npm run dev` in the root to start both applications. The client uses port `5173`; the API uses port `3001`.
+Install dependencies with `npm install` in the root, `client`, and `server` directories. Configure `server/.env` from `.env.example` (needs `OPENROUTER_API_KEY`, optional `MONGO_URI`), then run `npm run dev` in the root to start both applications. The client uses port `5173`; the API uses port `3001`.

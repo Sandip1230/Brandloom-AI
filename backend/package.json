@@ -1,0 +1,16 @@
+{
+  "name": "brandforge-backend",
+  "version": "1.0.0",
+  "description": "BrandForge AI - Backend (Stages 1-3: Discover, Position, Shape)",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5"
+  }
+}

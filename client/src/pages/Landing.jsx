@@ -62,11 +62,13 @@ export default function Landing() {
             reads what came before it, and the sixth checks the other five for
             contradictions before anything is handed to you.
           </p>
+          
           <div className="mt-9 flex items-center gap-6">
             <Link to="/workflow" className="bg-ink px-6 py-3 text-sm text-paper transition-colors hover:bg-gold">
               Start your brand
             </Link>
             
+            <a
               href="#pipeline"
               className="text-sm text-ink-soft underline decoration-ink-soft/30 underline-offset-4 transition-colors hover:text-ink hover:decoration-gold"
             >

@@ -10,6 +10,8 @@ export default {
         "paper-dim": "#E3DDCE",
         gold: "#B8863B",
         violet: "#5B4FCF",
+        midnight: "#07040F",
+        "midnight-soft": "#0D0920",
       },
       fontFamily: {
         display: ["Fraunces", "serif"],
@@ -18,6 +20,13 @@ export default {
       },
       maxWidth: {
         prose: "68ch",
+      },
+      backgroundImage: {
+        "brand-gradient":
+          "linear-gradient(90deg, #7C3AED 0%, #D946EF 50%, #3B82F6 100%)",
+      },
+      boxShadow: {
+        glow: "0 0 50px -12px rgba(168, 85, 247, 0.55)",
       },
     },
   },

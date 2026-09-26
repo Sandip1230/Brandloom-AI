@@ -1,6 +1,9 @@
 import { Routes, Route, Navigate, useParams } from "react-router-dom";
 import { useRef } from "react";
 import Landing from "./pages/Landing.jsx";
+import Login from "./pages/Login.jsx";
+import SignUp from "./pages/SignUp.jsx";
+import ForgotPassword from "./pages/ForgotPassword.jsx";
 import Workflow from "./pages/Workflow.jsx";
 import Projects from "./pages/Projects.jsx";
 import BrandKits from "./pages/BrandKits.jsx";
@@ -11,8 +14,6 @@ import { createProjectId } from "./lib/projectsStore.js";
 
 function WorkflowRoute() {
   const { projectId } = useParams();
-  // key={projectId} forces a fresh BrandProvider (and fresh state) whenever
-  // the URL switches to a different project, instead of reusing stale state.
   return (
     <BrandProvider key={projectId} projectId={projectId}>
       <Workflow />
@@ -29,6 +30,9 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<SignUp />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/projects" element={<Projects />} />
       <Route path="/brand-kits" element={<BrandKits />} />
       <Route path="/templates" element={<Templates />} />

@@ -137,7 +137,7 @@ export default function Landing() {
           <a href="#pipeline" className="login-btn">
             See how it works
           </a>
-          <Link to="/workflow" className="start-btn">
+          <Link to="/login" className="start-btn">
             Get Started
             <span>→</span>
           </Link>
@@ -165,7 +165,7 @@ export default function Landing() {
           </p>
 
           <div className="hero-buttons">
-            <Link to="/workflow" className="primary-btn">
+            <Link to="/login" className="primary-btn">
               Start your brand
               <span>→</span>
             </Link>

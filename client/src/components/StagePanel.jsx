@@ -19,16 +19,16 @@ export default function StagePanel({ stageKey, children }) {
 
   return (
     <section>
-      <span className="font-mono text-xs uppercase tracking-[0.14em] text-ink-soft">
-        {String(index + 1).padStart(2, "0")} — {meta.label}
+      <span className="text-xs font-medium uppercase tracking-wide text-[var(--text-soft)]">
+        Step {index + 1} of {STAGES.length}
       </span>
-      <h2 className="mt-3 font-display text-2xl text-ink sm:text-3xl">{meta.label}</h2>
-      <p className="mt-2 max-w-prose text-ink-soft">{meta.short}</p>
+      <h2 className="mt-2 text-2xl font-semibold text-[var(--text)]">{meta.label}</h2>
+      <p className="mt-1 text-sm text-[var(--text-soft)]">{meta.short}</p>
 
       <div className="mt-6">{children(output)}</div>
 
       {error && (
-        <p role="alert" className="mt-4 text-sm text-gold">
+        <p role="alert" className="mt-4 text-sm text-rose-500">
           {error}
         </p>
       )}
@@ -37,9 +37,9 @@ export default function StagePanel({ stageKey, children }) {
         type="button"
         onClick={handleRun}
         disabled={submitting}
-        className="mt-6 bg-ink px-6 py-3 text-sm text-paper transition-colors hover:bg-gold disabled:cursor-not-allowed disabled:opacity-40"
+        className="mt-6 rounded-lg bg-gradient-to-r from-[var(--accent-from)] to-[var(--accent-to)] px-6 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
       >
-        {submitting ? "Working…" : output ? "Run again" : `Run ${meta.label.toLowerCase()}`}
+        {submitting ? "Working…" : output ? "Regenerate" : "Continue"}
       </button>
     </section>
   );

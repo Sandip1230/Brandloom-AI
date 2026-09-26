@@ -1,8 +1,34 @@
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --bg: #f7f7fb;
+  --surface: #ffffff;
+  --surface-2: #f3f1fa;
+  --border: #e7e5f0;
+  --text: #14121f;
+  --text-soft: #6b6880;
+  --sidebar-bg: #ffffff;
+  --accent-from: #7c3aed;
+  --accent-to: #ec4899;
+  --accent-solid: #7c3aed;
+}
+
+.dark {
+  --bg: #0b0a18;
+  --surface: #14132a;
+  --surface-2: #1b1a35;
+  --border: #2a2850;
+  --text: #f2f1fa;
+  --text-soft: #9c9ab8;
+  --sidebar-bg: #100f22;
+  --accent-from: #8b5cf6;
+  --accent-to: #f472b6;
+  --accent-solid: #a78bfa;
+}
 
 @layer base {
   html {
@@ -10,18 +36,19 @@
   }
 
   body {
-    background-color: #efeae0;
-    color: #15132c;
-    font-family: "Space Grotesk", sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: "Inter", sans-serif;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 
   ::selection {
-    background-color: #b8863b;
-    color: #efeae0;
+    background-color: var(--accent-solid);
+    color: #ffffff;
   }
 
   :focus-visible {
-    outline: 2px solid #5b4fcf;
+    outline: 2px solid var(--accent-solid);
     outline-offset: 3px;
   }
 }

@@ -5,7 +5,7 @@ export default function ProgressStepper({ currentStage, completedStages = [], on
 
   return (
     <nav aria-label="Brand pipeline progress" className="overflow-x-auto">
-      <ol className="flex min-w-max items-center px-6 py-6 md:px-10">
+      <ol className="flex min-w-max items-center gap-1">
         {STAGES.map((stage, index) => {
           const isDone = completedStages.includes(stage.key);
           const isActive = index === activeIndex;
@@ -22,20 +22,20 @@ export default function ProgressStepper({ currentStage, completedStages = [], on
               >
                 <span
                   className={
-                    "flex h-7 w-7 items-center justify-center rounded-full border font-mono text-[11px] transition-colors " +
+                    "flex h-8 w-8 items-center justify-center rounded-full text-xs font-semibold transition-colors " +
                     (isActive
-                      ? "border-gold bg-gold text-paper"
+                      ? "bg-gradient-to-br from-[var(--accent-from)] to-[var(--accent-to)] text-white"
                       : isDone
-                      ? "border-ink bg-ink text-paper"
-                      : "border-ink-soft/40 text-ink-soft")
+                      ? "bg-[var(--surface-2)] text-[var(--text)]"
+                      : "border border-[var(--border)] text-[var(--text-soft)]")
                   }
                 >
-                  {isDone && !isActive ? "✓" : String(index + 1).padStart(2, "0")}
+                  {isDone && !isActive ? "✓" : index + 1}
                 </span>
                 <span
                   className={
-                    "whitespace-nowrap text-sm " +
-                    (isActive ? "text-ink" : isDone ? "text-ink-soft" : "text-ink-soft/60")
+                    "hidden whitespace-nowrap text-sm sm:inline " +
+                    (isActive ? "font-medium text-[var(--text)]" : "text-[var(--text-soft)]")
                   }
                 >
                   {stage.label}
@@ -44,7 +44,12 @@ export default function ProgressStepper({ currentStage, completedStages = [], on
               {index < STAGES.length - 1 && (
                 <span
                   aria-hidden="true"
-                  className={"mx-3 h-px w-10 " + (isDone ? "bg-gold" : "bg-ink-soft/20")}
+                  className={
+                    "mx-3 h-px w-8 sm:w-12 " +
+                    (isDone
+                      ? "bg-gradient-to-r from-[var(--accent-from)] to-[var(--accent-to)]"
+                      : "bg-[var(--border)]")
+                  }
                 />
               )}
             </li>

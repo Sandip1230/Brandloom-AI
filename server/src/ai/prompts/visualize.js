@@ -1,1 +1,12 @@
-module.exports = `Using the supplied brand context, propose typography, color mood, and imagery direction. Return only schema-valid JSON.\n\nContext: {{context}}`;
+// visualize.js
+module.exports = `Using the brand context below, propose a visual direction.
+
+Context: {{context}}
+
+Return a JSON object with exactly these keys:
+{
+  "typography": string,
+  "colorMood": string,
+  "imageryStyle": string,
+  "conceptsToAvoid": string[]
+}`;

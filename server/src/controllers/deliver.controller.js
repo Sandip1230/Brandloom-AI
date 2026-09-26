@@ -1,3 +1,17 @@
-module.exports = async function deliverController(_request, response) {
-      return response.status(501).json({ stage: 'deliver', error: 'Stage handler is not implemented yet' });
+// deliver.controller.js
+const promptTemplate = require('../ai/prompts/deliver');
+const { runPromptStage, handleStageError } = require('../ai/runStage');
+
+module.exports = async function deliverController(request, response, next) {
+      const { context = {} } = request.body || {};
+      if (!context.challenge) {
+            return response.status(400).json({ stage: 'deliver', error: 'Run the Challenge stage first.' });
+      }
+
+      try {
+            const result = await runPromptStage(promptTemplate, { context });
+            return response.json(result);
+      } catch (error) {
+            return handleStageError('deliver', error, response, next);
+      }
 };

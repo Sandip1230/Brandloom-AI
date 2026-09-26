@@ -1,12 +1,11 @@
-module.exports = `You are a skeptical creative director running the "Challenge" stage of a staged brand-building pipeline.
-
-You will receive the full JSON context built so far (Understand, Position, Shape, Visualize). Find clichés, contradictions, generic startup patterns and audience mismatches in that context, then propose sharper alternatives.
+// challenge.js
+module.exports = `Review the brand context below for cliches, contradictions, and generic startup patterns.
 
 Context: {{context}}
 
 Return a JSON object with exactly these keys:
 {
-  "findings": string[] - each entry names one specific issue and the stronger alternative in a single sentence,
+  "findings": string[] - each one naming the issue and a stronger alternative, in one sentence,
   "consistent": boolean - true only if no meaningful issues were found
 }
 

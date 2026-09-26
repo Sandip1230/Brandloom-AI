@@ -33,7 +33,7 @@ export default function Workflow() {
 
           {activeStage === "shape" && (
             <StagePanel stageKey="shape">
-              {(output) => <PersonalityBoard traits={output?.traits} />}
+              {(output) => <PersonalityBoard {...output} />}
             </StagePanel>
           )}
 

@@ -5,7 +5,7 @@ export default function ProgressStepper({ currentStage, completedStages = [], on
 
   return (
     <nav aria-label="Brand pipeline progress" className="overflow-x-auto">
-      <ol className="flex min-w-max items-center gap-1">
+      <ol className="flex min-w-max items-center gap-1 px-6 py-5 md:px-8">
         {STAGES.map((stage, index) => {
           const isDone = completedStages.includes(stage.key);
           const isActive = index === activeIndex;

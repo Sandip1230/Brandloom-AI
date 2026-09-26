@@ -1,9 +1,5 @@
-<<<<<<< Updated upstream
 import WeaveDiagram from "../components/WeaveDiagram";
 import { Link } from "react-router-dom";
-=======
-import "../styles/landing.css";
->>>>>>> Stashed changes
 
 const STEPS = [
   {
@@ -40,7 +36,6 @@ const STEPS = [
 
 export default function Landing() {
   return (
-<<<<<<< Updated upstream
     <div className="min-h-screen bg-paper text-ink">
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-8 md:px-10">
         <span className="font-display text-xl tracking-tight">Brandloom</span>
@@ -48,176 +43,76 @@ export default function Landing() {
           Start your brand
         </Link>
       </header>
-=======
-    <div className="page">
-      {/* ================= NAVBAR ================= */}
-      <nav className="navbar">
-        <a href="#top" className="logo">
-          <span className="logo-star">✦</span>
-          <span>Brandloom</span>
-        </a>
->>>>>>> Stashed changes
 
-        <div className="nav-links">
-          <a href="#pipeline">Pipeline</a>
-          <a href="#pipeline">Stages</a>
-        </div>
-
-        <div className="nav-buttons">
-          <a href="#pipeline" className="login-btn">
-            See how it works
-          </a>
-          <a href="#start" className="start-btn">
-            Get Started
-          </a>
-        </div>
-      </nav>
-
-      {/* ================= HERO ================= */}
-      <main className="hero">
-        {/* LEFT SIDE */}
-        <section className="hero-left">
-          <div className="ai-badge">
-            <span>✦</span>
-            AI-Powered Brand Pipeline
-          </div>
-
-          <h1>
-            Give it one rough idea.
+      {/* Hero — asymmetric, left copy / right literal weave diagram */}
+      <section className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-16 px-6 pb-20 pt-8 md:grid-cols-[1.05fr_1fr] md:px-10 md:pt-16">
+        <div>
+          <p className="font-mono text-xs uppercase tracking-[0.14em] text-ink-soft">
+            An AI brand pipeline, not a prompt box
+          </p>
+          <h1 className="mt-5 font-display text-4xl italic leading-[1.08] text-ink sm:text-5xl md:text-6xl">
+            Give it one rough
             <br />
-            Get a <span>brand</span>
+            idea. Get a brand
             <br />
             that holds together.
-            <i></i>
           </h1>
-
-          <p className="hero-description">
+          <p className="mt-7 max-w-prose text-lg leading-relaxed text-ink-soft">
             Brandloom runs your idea through six connected stages — each one
-            reads what came before it, and the sixth checks the other five
-            for contradictions before anything is handed to you.
+            reads what came before it, and the sixth checks the other five for
+            contradictions before anything is handed to you.
           </p>
-<<<<<<< Updated upstream
-          
+
           <div className="mt-9 flex items-center gap-6">
             <Link to="/workflow" className="bg-ink px-6 py-3 text-sm text-paper transition-colors hover:bg-gold">
               Start your brand
             </Link>
-            
+
             <a
               href="#pipeline"
               className="text-sm text-ink-soft underline decoration-ink-soft/30 underline-offset-4 transition-colors hover:text-ink hover:decoration-gold"
             >
-=======
-
-          <div className="hero-buttons">
-            <a href="#start" id="start" className="primary-btn">
-              Start your brand
-              <span>→</span>
-            </a>
-
-            <a href="#pipeline" className="demo-btn">
-              <span className="play">▶</span>
->>>>>>> Stashed changes
               See how it works
             </a>
           </div>
+        </div>
 
-          {/* PEOPLE */}
-          <div className="social-proof">
-            <div className="avatars">
-              <div className="avatar avatar1"></div>
-              <div className="avatar avatar2"></div>
-              <div className="avatar avatar3"></div>
-              <div className="avatar avatar4"></div>
-            </div>
+        <div className="flex justify-center md:justify-end">
+          <WeaveDiagram />
+        </div>
+      </section>
 
-            <p>
-              Built for founders shaping
-              <br />
-              their first brand with AI.
-            </p>
-          </div>
-        </section>
+      <hr className="mx-auto max-w-6xl border-ink/10" />
 
-        {/* RIGHT SIDE */}
-        <section className="hero-right">
-          {/* Glow */}
-          <div className="blue-glow"></div>
-          <div className="purple-glow"></div>
-
-          {/* Decorative ribbon */}
-          <div className="ribbon ribbon-one"></div>
-          <div className="ribbon ribbon-two"></div>
-
-          {/* PHONE */}
-          <div className="phone">
-            <div className="phone-screen">
-              <div className="phone-logo">
-                <span>✦</span>
-              </div>
-
-              <div className="phone-title">Brandloom</div>
-
-              <div className="phone-subtitle">Ideas to launch-ready brands</div>
-            </div>
-          </div>
-
-          {/* FLOATING CARDS */}
-          <div className="workflow-card idea-card">
-            <div className="card-icon">◇</div>
-            <span>Understand</span>
-          </div>
-
-          <div className="workflow-card strategy-card">
-            <div className="card-icon">♢</div>
-            <span>Position</span>
-          </div>
-
-          <div className="workflow-card identity-card">
-            <div className="card-icon">◉</div>
-            <span>Visualize</span>
-          </div>
-
-          <div className="workflow-card launch-card">
-            <div className="card-icon">♥</div>
-            <span>Deliver</span>
-          </div>
-        </section>
-      </main>
-
-      {/* ================= BOTTOM FLOW ================= */}
-      <div className="bottom-flow">
-        <span>Understand</span>
-        <b>→</b>
-        <span>Position</span>
-        <b>→</b>
-        <span>Visualize</span>
-        <b>→</b>
-        <span>Deliver</span>
-      </div>
-
-      {/* ================= PIPELINE DETAIL ================= */}
-      <section id="pipeline" className="pipeline-section">
-        <h2>Six stages. One thread of context.</h2>
-        <p>
+      {/* Pipeline detail */}
+      <section id="pipeline" className="mx-auto max-w-6xl px-6 py-20 md:px-10">
+        <h2 className="font-display text-2xl text-ink sm:text-3xl">
+          Six stages. One thread of context.
+        </h2>
+        <p className="mt-4 max-w-prose text-ink-soft">
           Nothing restarts from zero. Every stage writes structured results
           that the next one reads before it says a word.
         </p>
 
-        <div className="stage-grid">
+        <div className="mt-12 grid grid-cols-1 gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
           {STEPS.map((step) => (
-            <div key={step.n} className="stage-card">
-              <span className="stage-number">{step.n}</span>
-              <h3>{step.title}</h3>
-              <p>{step.body}</p>
+            <div key={step.n} className="border-t border-ink/15 pt-5">
+              <span className="font-mono text-xs text-gold">{step.n}</span>
+              <h3 className="mt-2 font-display text-xl text-ink">
+                {step.title}
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-ink-soft">
+                {step.body}
+              </p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ================= FOOTER ================= */}
-      <footer className="site-footer">
-        Brandloom — built for the Inkloom × We Code Coders Hackathon.
+      <hr className="mx-auto max-w-6xl border-ink/10" />
+
+      <footer className="mx-auto max-w-6xl px-6 py-10 text-sm text-ink-soft md:px-10">
+        Brandloom — built for the Inkloom x We Code Coders Hackathon.
       </footer>
     </div>
   );

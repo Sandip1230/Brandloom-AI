@@ -1,7 +1,5 @@
 import { Link } from "react-router-dom";
-import ThemeToggle from "../components/ThemeToggle.jsx";
-
-const NAV_LINKS = ["Features", "How it works", "Examples", "Pricing"];
+import "../styles/landing.css";
 
 const STEPS = [
   { n: "01", title: "Understand", body: "Extract the real problem, audience, constraints and open questions before anything gets named." },
@@ -14,77 +12,162 @@ const STEPS = [
 
 export default function Landing() {
   return (
-    <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
-      <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6 md:px-10">
-        <span className="flex items-center gap-2 text-lg font-semibold">
-          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[var(--accent-from)] to-[var(--accent-to)] text-sm font-bold text-white">
-            B
-          </span>
-          Brandloom
-        </span>
+    <div className="page">
+      {/* ================= NAVBAR ================= */}
+      <nav className="navbar">
+        <a href="#top" className="logo">
+          <span className="logo-star">✦</span>
+          <span>Brandloom</span>
+        </a>
 
-        <nav className="hidden items-center gap-6 text-sm text-[var(--text-soft)] md:flex">
-          {NAV_LINKS.map((link) => (
-            <span key={link} className="cursor-not-allowed opacity-70">
-              {link}
-            </span>
-          ))}
-        </nav>
+        <div className="nav-links">
+          <a href="#pipeline">Pipeline</a>
+          <a href="#pipeline">Stages</a>
+        </div>
 
-        <div className="flex items-center gap-3">
-          <ThemeToggle />
-          <Link
-            to="/workflow"
-            className="rounded-lg bg-gradient-to-r from-[var(--accent-from)] to-[var(--accent-to)] px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
-          >
-            Get Started →
+        <div className="nav-buttons">
+          <a href="#pipeline" className="login-btn">
+            See how it works
+          </a>
+          <Link to="/workflow" className="start-btn">
+            Get Started
           </Link>
         </div>
-      </header>
+      </nav>
 
-      <section className="mx-auto max-w-3xl px-6 py-20 text-center md:px-10">
-        <span className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface-2)] px-3 py-1 text-xs font-medium text-[var(--text-soft)]">
-          AI-Powered Brand Intelligence
-        </span>
+      {/* ================= HERO ================= */}
+      <main className="hero">
+        {/* LEFT SIDE */}
+        <section className="hero-left">
+          <div className="ai-badge">
+            <span>✦</span>
+            AI-Powered Brand Pipeline
+          </div>
 
-        <h1 className="mt-6 text-4xl font-semibold leading-tight sm:text-5xl">
-          Turn your idea into a{" "}
-          <span className="bg-gradient-to-r from-[var(--accent-from)] to-[var(--accent-to)] bg-clip-text text-transparent">
-            complete brand.
-          </span>
-        </h1>
+          <h1>
+            Give it one rough idea.
+            <br />
+            Get a <span>brand</span>
+            <br />
+            that holds together.
+            <i></i>
+          </h1>
 
-        <p className="mt-4 text-[var(--text-soft)]">
-          From a rough thought to a launch-ready brand system. Powered by AI, guided by strategy, designed for builders.
+          <p className="hero-description">
+            Brandloom runs your idea through six connected stages — each one
+            reads what came before it, and the sixth checks the other five
+            for contradictions before anything is handed to you.
+          </p>
+
+          <div className="hero-buttons">
+            <Link to="/workflow" className="primary-btn">
+              Start your brand
+              <span>→</span>
+            </Link>
+
+            <a href="#pipeline" className="demo-btn">
+              <span className="play">▶</span>
+              See how it works
+            </a>
+          </div>
+
+          {/* PEOPLE */}
+          <div className="social-proof">
+            <div className="avatars">
+              <div className="avatar avatar1"></div>
+              <div className="avatar avatar2"></div>
+              <div className="avatar avatar3"></div>
+              <div className="avatar avatar4"></div>
+            </div>
+
+            <p>
+              Built for founders shaping
+              <br />
+              their first brand with AI.
+            </p>
+          </div>
+        </section>
+
+        {/* RIGHT SIDE */}
+        <section className="hero-right">
+          {/* Glow */}
+          <div className="blue-glow"></div>
+          <div className="purple-glow"></div>
+
+          {/* Decorative ribbon */}
+          <div className="ribbon ribbon-one"></div>
+          <div className="ribbon ribbon-two"></div>
+
+          {/* PHONE */}
+          <div className="phone">
+            <div className="phone-screen">
+              <div className="phone-logo">
+                <span>✦</span>
+              </div>
+
+              <div className="phone-title">Brandloom</div>
+
+              <div className="phone-subtitle">Ideas to launch-ready brands</div>
+            </div>
+          </div>
+
+          {/* FLOATING CARDS */}
+          <div className="workflow-card idea-card">
+            <div className="card-icon">◇</div>
+            <span>Understand</span>
+          </div>
+
+          <div className="workflow-card strategy-card">
+            <div className="card-icon">♢</div>
+            <span>Position</span>
+          </div>
+
+          <div className="workflow-card identity-card">
+            <div className="card-icon">◉</div>
+            <span>Visualize</span>
+          </div>
+
+          <div className="workflow-card launch-card">
+            <div className="card-icon">♥</div>
+            <span>Deliver</span>
+          </div>
+        </section>
+      </main>
+
+      {/* ================= BOTTOM FLOW ================= */}
+      <div className="bottom-flow">
+        <span>Understand</span>
+        <b>→</b>
+        <span>Position</span>
+        <b>→</b>
+        <span>Visualize</span>
+        <b>→</b>
+        <span>Deliver</span>
+      </div>
+
+      {/* ================= PIPELINE DETAIL ================= */}
+      <section id="pipeline" className="pipeline-section">
+        <h2>Six stages. One thread of context.</h2>
+        <p>
+          Nothing restarts from zero. Every stage writes structured results
+          that the next one reads before it says a word.
         </p>
 
-        <div className="mt-8 flex items-center justify-center gap-3">
-          <Link
-            to="/workflow"
-            className="rounded-lg bg-gradient-to-r from-[var(--accent-from)] to-[var(--accent-to)] px-6 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90"
-          >
-            Get Started →
-          </Link>
-          <button
-            type="button"
-            disabled
-            title="Coming soon"
-            className="cursor-not-allowed rounded-lg border border-[var(--border)] px-6 py-2.5 text-sm font-medium text-[var(--text-soft)] opacity-70"
-          >
-            ▷ Watch Demo
-          </button>
+        <div className="stage-grid">
+          {STEPS.map((step) => (
+            <div key={step.n} className="stage-card">
+              <span className="stage-number">{step.n}</span>
+              <h3>{step.title}</h3>
+              <p>{step.body}</p>
+            </div>
+          ))}
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-5xl gap-6 px-6 pb-24 sm:grid-cols-2 md:px-10 lg:grid-cols-3">
-        {STEPS.map((step) => (
-          <div key={step.n} className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5">
-            <span className="font-mono text-xs text-[var(--accent-solid)]">{step.n}</span>
-            <h3 className="mt-2 text-base font-semibold">{step.title}</h3>
-            <p className="mt-1 text-sm text-[var(--text-soft)]">{step.body}</p>
-          </div>
-        ))}
-      </section>
+      {/* ================= FOOTER ================= */}
+      <footer className="site-footer">
+        Brandloom — built for the Inkloom × We Code Coders Hackathon.
+      </footer>
     </div>
   );
 }

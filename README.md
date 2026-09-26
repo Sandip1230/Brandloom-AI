@@ -17,20 +17,33 @@ Founders start with a single rough sentence. That's not a brand. Brandloom inter
 5. **Challenge** — detect clichés/generic patterns, propose stronger alternatives
 6. **Deliver** — consistency-checked, exportable brand kit
 
-Each stage's structured JSON output is passed forward as context — nothing restarts from zero.
+Each stage's structured JSON output is stored and passed forward as context — nothing restarts from zero.
 
 ## Tech Stack
 
-- Next.js (App Router) + TypeScript
-- Tailwind CSS
-- Anthropic API (staged prompt chain, structured JSON outputs)
-- [DB choice — e.g. Supabase/SQLite via Prisma]
+- **MongoDB** — persistence for brand sessions & stage outputs
+- **Express.js** — REST API, stage orchestration
+- **React** (Vite) — frontend, pipeline UI
+- **Node.js** — server runtime
+- **Anthropic API** — staged prompt chain, structured JSON outputs
+- Tailwind CSS — styling
 
 ## Getting Started
 
 \`\`\`bash
+# clone
+git clone https://github.com/<org>/brandloom-ai.git
+cd brandloom-ai
+
+# backend
+cd server
 npm install
-cp .env.example .env.local   # add your API key
+cp .env.example .env    # add MONGO_URI + ANTHROPIC_API_KEY
+npm run dev
+
+# frontend (new terminal)
+cd client
+npm install
 npm run dev
 \`\`\`
 

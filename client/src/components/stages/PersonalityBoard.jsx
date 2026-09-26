@@ -1,8 +1,15 @@
+// PersonalityBoard.jsx
 export default function PersonalityBoard({ traits = [] }) {
-      return (
-            <section aria-label="Brand personality">
-                  <h2>Personality</h2>
-                  {traits.length ? <ul>{traits.map((trait) => <li key={trait}>{trait}</li>)}</ul> : <p>Personality traits will appear here.</p>}
-            </section>
-      );
+  if (!traits.length) {
+    return <p className="text-sm text-ink-soft">Personality traits will appear here.</p>;
+  }
+  return (
+    <ul className="flex flex-wrap gap-2 border-t border-ink/15 pt-5">
+      {traits.map((trait) => (
+        <li key={trait} className="border border-ink/20 px-3 py-1 text-sm text-ink">
+          {trait}
+        </li>
+      ))}
+    </ul>
+  );
 }

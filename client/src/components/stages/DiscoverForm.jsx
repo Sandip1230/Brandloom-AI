@@ -1,33 +1,53 @@
-import { useState } from 'react';
-import { useBrand } from '../../context/BrandContext.jsx';
+import { useState } from "react";
+import { useBrand } from "../../context/BrandContext.jsx";
 
 export default function DiscoverForm() {
-  const { brand, submitBrief } = useBrand();
+  const { brand, submitBrief, pendingStage, stageErrors } = useBrand();
   const [brief, setBrief] = useState(brand.brief);
-  const [error, setError] = useState('');
-  const [submitting, setSubmitting] = useState(false);
+  const submitting = pendingStage === "understand";
+  const error = stageErrors.understand;
 
   async function handleSubmit(event) {
     event.preventDefault();
-    setError('');
-    setSubmitting(true);
     try {
       await submitBrief(brief.trim());
     } catch {
-      setError('The understand stage is not connected yet. Check the API server and try again.');
-    } finally {
-      setSubmitting(false);
+      // error is already captured in stageErrors — nothing else to do here
     }
   }
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Start with the idea</h2>
-      <label htmlFor="brand-brief">What are you building, and who is it for?</label>
-      <textarea id="brand-brief" value={brief} onChange={(event) => setBrief(event.target.value)} required rows={5} />
-      {error && <p role="alert">{error}</p>}
-      <button type="submit" disabled={submitting || !brief.trim()}>
-        {submitting ? 'Working…' : 'Understand my idea'}
+      <span className="font-mono text-xs uppercase tracking-[0.14em] text-ink-soft">01 — Understand</span>
+      <h2 className="mt-3 font-display text-2xl text-ink sm:text-3xl">
+        Start with the idea
+      </h2>
+      <p className="mt-2 max-w-prose text-ink-soft">
+        One rough sentence is enough. What are you building, and who is it for?
+      </p>
+
+      <textarea
+        id="brand-brief"
+        value={brief}
+        onChange={(event) => setBrief(event.target.value)}
+        required
+        rows={5}
+        placeholder="e.g. An app that helps students find teammates for hackathons and class projects."
+        className="mt-6 w-full max-w-prose border border-ink/20 bg-paper px-4 py-3 text-ink placeholder:text-ink-soft/50 focus:border-gold"
+      />
+
+      {error && (
+        <p role="alert" className="mt-3 text-sm text-gold">
+          {error}
+        </p>
+      )}
+
+      <button
+        type="submit"
+        disabled={submitting || !brief.trim()}
+        className="mt-6 bg-ink px-6 py-3 text-sm text-paper transition-colors hover:bg-gold disabled:cursor-not-allowed disabled:opacity-40"
+      >
+        {submitting ? "Working…" : "Understand my idea"}
       </button>
     </form>
   );

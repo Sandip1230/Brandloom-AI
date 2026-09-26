@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
-import { runStage } from "../api/brandApi.js";
-import { STAGE_KEYS, nextStageKey } from "../lib/stages.js";
+import { runStage as callStageApi } from "../api/brandApi.js";
+import { STAGE_KEYS, nextStageKey, previousStageKey } from "../lib/stages.js";
 
 const BrandContext = createContext(null);
 
@@ -11,17 +11,18 @@ export function BrandProvider({ children }) {
   const [stageErrors, setStageErrors] = useState({});
 
   // The Understand stage takes the user's free-text brief directly.
+  // It does NOT auto-advance — the caller shows a confirmation view and
+  // the user explicitly continues, same as every later stage.
   async function submitBrief(brief) {
     setPendingStage("understand");
     setStageErrors((current) => ({ ...current, understand: null }));
     try {
-      const result = await runStage("understand", { brief });
+      const result = await callStageApi("understand", { brief });
       setBrand((current) => ({
         ...current,
         brief,
         stageOutputs: { ...current.stageOutputs, understand: result },
       }));
-      setActiveStage(nextStageKey("understand"));
       return result;
     } catch (error) {
       setStageErrors((current) => ({ ...current, understand: describeError(error) }));
@@ -33,12 +34,12 @@ export function BrandProvider({ children }) {
 
   // Every later stage reads the brief plus everything decided so far —
   // that accumulated context is the thing that makes this a pipeline,
-  // not six disconnected prompts.
-  async function runStageAndAdvance(stageKey) {
+  // not six disconnected prompts. Does not auto-advance.
+  async function runStage(stageKey) {
     setPendingStage(stageKey);
     setStageErrors((current) => ({ ...current, [stageKey]: null }));
     try {
-      const result = await runStage(stageKey, {
+      const result = await callStageApi(stageKey, {
         brief: brand.brief,
         context: brand.stageOutputs,
       });
@@ -46,8 +47,6 @@ export function BrandProvider({ children }) {
         ...current,
         stageOutputs: { ...current.stageOutputs, [stageKey]: result },
       }));
-      const next = nextStageKey(stageKey);
-      if (next) setActiveStage(next);
       return result;
     } catch (error) {
       setStageErrors((current) => ({ ...current, [stageKey]: describeError(error) }));
@@ -61,6 +60,16 @@ export function BrandProvider({ children }) {
     setActiveStage(stageKey);
   }
 
+  function advance(fromStageKey) {
+    const next = nextStageKey(fromStageKey);
+    if (next) setActiveStage(next);
+  }
+
+  function goBack(fromStageKey) {
+    const previous = previousStageKey(fromStageKey);
+    if (previous) setActiveStage(previous);
+  }
+
   return (
     <BrandContext.Provider
       value={{
@@ -69,8 +78,10 @@ export function BrandProvider({ children }) {
         pendingStage,
         stageErrors,
         submitBrief,
-        runStageAndAdvance,
+        runStage,
         goToStage,
+        advance,
+        goBack,
       }}
     >
       {children}

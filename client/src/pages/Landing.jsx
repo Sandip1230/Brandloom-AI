@@ -1,4 +1,5 @@
 import WeaveDiagram from "../components/WeaveDiagram";
+import { Link } from "react-router-dom";
 
 const STEPS = [
   {
@@ -38,12 +39,9 @@ export default function Landing() {
     <div className="min-h-screen bg-paper text-ink">
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-8 md:px-10">
         <span className="font-display text-xl tracking-tight">Brandloom</span>
-        <a
-          href="#start"
-          className="border-b border-ink pb-0.5 text-sm text-ink transition-colors hover:border-gold hover:text-gold"
-        >
+        <Link to="/workflow" className="border-b border-ink pb-0.5 text-sm text-ink transition-colors hover:border-gold hover:text-gold">
           Start your brand
-        </a>
+        </Link>
       </header>
 
       {/* Hero — asymmetric, left copy / right literal weave diagram */}
@@ -65,14 +63,10 @@ export default function Landing() {
             contradictions before anything is handed to you.
           </p>
           <div className="mt-9 flex items-center gap-6">
-            <a
-              href="#start"
-              id="start"
-              className="bg-ink px-6 py-3 text-sm text-paper transition-colors hover:bg-gold"
-            >
+            <Link to="/workflow" className="bg-ink px-6 py-3 text-sm text-paper transition-colors hover:bg-gold">
               Start your brand
-            </a>
-            <a
+            </Link>
+            
               href="#pipeline"
               className="text-sm text-ink-soft underline decoration-ink-soft/30 underline-offset-4 transition-colors hover:text-ink hover:decoration-gold"
             >

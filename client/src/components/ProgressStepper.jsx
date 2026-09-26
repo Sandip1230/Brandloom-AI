@@ -5,7 +5,7 @@ export default function ProgressStepper({ currentStage, completedStages = [], on
 
   return (
     <nav aria-label="Brand pipeline progress" className="overflow-x-auto">
-      <ol className="flex min-w-max items-center px-6 py-6 md:px-10">
+      <ol className="flex min-w-max items-center px-6 py-5 md:px-8">
         {STAGES.map((stage, index) => {
           const isDone = completedStages.includes(stage.key);
           const isActive = index === activeIndex;
@@ -24,10 +24,10 @@ export default function ProgressStepper({ currentStage, completedStages = [], on
                   className={
                     "flex h-7 w-7 items-center justify-center rounded-full border font-mono text-[11px] transition-colors " +
                     (isActive
-                      ? "border-gold bg-gold text-paper"
+                      ? "border-gold bg-gold text-ink"
                       : isDone
-                      ? "border-ink bg-ink text-paper"
-                      : "border-ink-soft/40 text-ink-soft")
+                      ? "border-violet bg-violet text-paper"
+                      : "border-paper/25 text-paper/50")
                   }
                 >
                   {isDone && !isActive ? "✓" : String(index + 1).padStart(2, "0")}
@@ -35,7 +35,7 @@ export default function ProgressStepper({ currentStage, completedStages = [], on
                 <span
                   className={
                     "whitespace-nowrap text-sm " +
-                    (isActive ? "text-ink" : isDone ? "text-ink-soft" : "text-ink-soft/60")
+                    (isActive ? "text-paper" : isDone ? "text-paper/70" : "text-paper/35")
                   }
                 >
                   {stage.label}
@@ -44,7 +44,7 @@ export default function ProgressStepper({ currentStage, completedStages = [], on
               {index < STAGES.length - 1 && (
                 <span
                   aria-hidden="true"
-                  className={"mx-3 h-px w-10 " + (isDone ? "bg-gold" : "bg-ink-soft/20")}
+                  className={"mx-3 h-px w-8 " + (isDone ? "bg-violet" : "bg-paper/15")}
                 />
               )}
             </li>

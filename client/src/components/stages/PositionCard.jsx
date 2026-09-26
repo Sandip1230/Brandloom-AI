@@ -1,35 +1,22 @@
-import { useBrand } from '../../context/BrandContext.jsx';
-
-export default function PositionCard() {
-  const { stageOutputs, advanceStage, loading, error } = useBrand();
-  const position = stageOutputs.position;
-
-  async function handleContinue() {
-    try {
-      await advanceStage('position');
-    } catch {
-      // handled via context
-    }
+// PositionCard.jsx
+export default function PositionCard({ position }) {
+  if (!position) {
+    return <p className="text-sm text-ink-soft">Positioning results will appear here.</p>;
   }
-
   return (
-    <section aria-label="Brand position" className="space-y-3">
-      <h2 className="text-lg font-semibold">Position</h2>
-      {position ? (
-        <div className="space-y-1">
-          <p><strong>Category:</strong> {position.category}</p>
-          <p><strong>Differentiator:</strong> {position.differentiator}</p>
-          <p><strong>Value proposition:</strong> {position.valueProposition}</p>
-        </div>
-      ) : (
-        <>
-          <p>Ready to define how this brand stands apart.</p>
-          {error && <p role="alert" className="text-red-600">{error}</p>}
-          <button type="button" onClick={handleContinue} disabled={loading} className="px-4 py-2 rounded bg-black text-white disabled:opacity-50">
-            {loading ? 'Working…' : 'Run Position stage'}
-          </button>
-        </>
-      )}
-    </section>
+    <div className="space-y-3 border-t border-ink/15 pt-5">
+      <div>
+        <span className="font-mono text-[11px] uppercase tracking-[0.1em] text-gold">Category</span>
+        <p className="mt-1 text-ink">{position.category}</p>
+      </div>
+      <div>
+        <span className="font-mono text-[11px] uppercase tracking-[0.1em] text-gold">Value proposition</span>
+        <p className="mt-1 text-ink">{position.valueProposition}</p>
+      </div>
+      <div>
+        <span className="font-mono text-[11px] uppercase tracking-[0.1em] text-gold">Differentiator</span>
+        <p className="mt-1 text-ink">{position.differentiator}</p>
+      </div>
+    </div>
   );
 }

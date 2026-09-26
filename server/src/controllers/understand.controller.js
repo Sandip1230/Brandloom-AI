@@ -1,20 +1,17 @@
-const { generateStageOutput } = require('../ai/client');
-const understandPrompt = require('../ai/prompts/understand');
+// understand.controller.js
+const promptTemplate = require('../ai/prompts/understand');
+const { runPromptStage, handleStageError } = require('../ai/runStage');
 
 module.exports = async function understandController(request, response, next) {
+  const { brief } = request.body || {};
+  if (!brief || !brief.trim()) {
+    return response.status(400).json({ stage: 'understand', error: 'A brief is required.' });
+  }
+
   try {
-    const { brief } = request.body;
-    if (!brief || typeof brief !== 'string' || brief.trim().length < 5) {
-      return response.status(400).json({ error: "Provide a 'brief' string of at least 5 characters." });
-    }
-
-    const result = await generateStageOutput({
-      systemPrompt: understandPrompt,
-      userPayload: { brief: brief.trim() },
-    });
-
-    return response.json({ stage: 'understand', ...result });
+    const result = await runPromptStage(promptTemplate, { brief: brief.trim() });
+    return response.json(result);
   } catch (error) {
-    return next(error);
+    return handleStageError('understand', error, response, next);
   }
 };

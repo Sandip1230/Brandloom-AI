@@ -1,20 +1,17 @@
-const { generateStageOutput } = require('../ai/client');
-const shapePrompt = require('../ai/prompts/shape');
+// shape.controller.js
+const promptTemplate = require('../ai/prompts/shape');
+const { runPromptStage, handleStageError } = require('../ai/runStage');
 
 module.exports = async function shapeController(request, response, next) {
+  const { context = {} } = request.body || {};
+  if (!context.position) {
+    return response.status(400).json({ stage: 'shape', error: 'Run the Position stage first.' });
+  }
+
   try {
-    const { context } = request.body;
-    if (!context || typeof context !== 'object') {
-      return response.status(400).json({ error: "Provide 'context' — Understand + Position outputs." });
-    }
-
-    const result = await generateStageOutput({
-      systemPrompt: shapePrompt,
-      userPayload: context,
-    });
-
-    return response.json({ stage: 'shape', ...result });
+    const result = await runPromptStage(promptTemplate, { context });
+    return response.json(result);
   } catch (error) {
-    return next(error);
+    return handleStageError('shape', error, response, next);
   }
 };

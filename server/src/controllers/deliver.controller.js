@@ -1,21 +1,17 @@
-const { generateStageOutput } = require('../ai/client');
-const deliverPrompt = require('../ai/prompts/deliver');
+// deliver.controller.js
+const promptTemplate = require('../ai/prompts/deliver');
+const { runPromptStage, handleStageError } = require('../ai/runStage');
 
 module.exports = async function deliverController(request, response, next) {
+  const { context = {} } = request.body || {};
+  if (!context.challenge) {
+    return response.status(400).json({ stage: 'deliver', error: 'Run the Challenge stage first.' });
+  }
+
   try {
-    const { context } = request.body;
-    if (!context || typeof context !== 'object') {
-      return response.status(400).json({ error: "Provide 'context' — all prior stage outputs including Challenge." });
-    }
-
-    const result = await generateStageOutput({
-      systemPrompt: deliverPrompt,
-      userPayload: context,
-      maxTokens: 2000,
-    });
-
-    return response.json({ stage: 'deliver', ...result });
+    const result = await runPromptStage(promptTemplate, { context });
+    return response.json(result);
   } catch (error) {
-    return next(error);
+    return handleStageError('deliver', error, response, next);
   }
 };

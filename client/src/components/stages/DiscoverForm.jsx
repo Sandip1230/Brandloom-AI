@@ -1,34 +1,53 @@
-import { useState } from 'react';
-import { useBrand } from '../../context/BrandContext.jsx';
+import { useState } from "react";
+import { useBrand } from "../../context/BrandContext.jsx";
 
 export default function DiscoverForm() {
-  const { brief, submitBrief, loading, error } = useBrand();
-  const [value, setValue] = useState(brief);
+  const { brand, submitBrief, pendingStage, stageErrors } = useBrand();
+  const [brief, setBrief] = useState(brand.brief);
+  const submitting = pendingStage === "understand";
+  const error = stageErrors.understand;
 
   async function handleSubmit(event) {
     event.preventDefault();
     try {
-      await submitBrief(value.trim());
+      await submitBrief(brief.trim());
     } catch {
-      // error already captured in context
+      // error is already captured in stageErrors — nothing else to do here
     }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3">
-      <h2 className="text-lg font-semibold">Start with the idea</h2>
-      <label htmlFor="brand-brief">What are you building, and who is it for?</label>
+    <form onSubmit={handleSubmit}>
+      <span className="font-mono text-xs uppercase tracking-[0.14em] text-ink-soft">01 — Understand</span>
+      <h2 className="mt-3 font-display text-2xl text-ink sm:text-3xl">
+        Start with the idea
+      </h2>
+      <p className="mt-2 max-w-prose text-ink-soft">
+        One rough sentence is enough. What are you building, and who is it for?
+      </p>
+
       <textarea
         id="brand-brief"
-        value={value}
-        onChange={(event) => setValue(event.target.value)}
+        value={brief}
+        onChange={(event) => setBrief(event.target.value)}
         required
         rows={5}
-        className="w-full border rounded p-2"
+        placeholder="e.g. An app that helps students find teammates for hackathons and class projects."
+        className="mt-6 w-full max-w-prose border border-ink/20 bg-paper px-4 py-3 text-ink placeholder:text-ink-soft/50 focus:border-gold"
       />
-      {error && <p role="alert" className="text-red-600">{error}</p>}
-      <button type="submit" disabled={loading || !value.trim()} className="px-4 py-2 rounded bg-black text-white disabled:opacity-50">
-        {loading ? 'Working…' : 'Understand my idea'}
+
+      {error && (
+        <p role="alert" className="mt-3 text-sm text-gold">
+          {error}
+        </p>
+      )}
+
+      <button
+        type="submit"
+        disabled={submitting || !brief.trim()}
+        className="mt-6 bg-ink px-6 py-3 text-sm text-paper transition-colors hover:bg-gold disabled:cursor-not-allowed disabled:opacity-40"
+      >
+        {submitting ? "Working…" : "Understand my idea"}
       </button>
     </form>
   );

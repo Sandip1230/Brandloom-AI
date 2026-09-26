@@ -1,20 +1,17 @@
-const { generateStageOutput } = require('../ai/client');
-const visualizePrompt = require('../ai/prompts/visualize');
+// visualize.controller.js
+const promptTemplate = require('../ai/prompts/visualize');
+const { runPromptStage, handleStageError } = require('../ai/runStage');
 
 module.exports = async function visualizeController(request, response, next) {
+  const { context = {} } = request.body || {};
+  if (!context.shape) {
+    return response.status(400).json({ stage: 'visualize', error: 'Run the Shape stage first.' });
+  }
+
   try {
-    const { context } = request.body;
-    if (!context || typeof context !== 'object') {
-      return response.status(400).json({ error: "Provide 'context' — Understand + Position + Shape outputs." });
-    }
-
-    const result = await generateStageOutput({
-      systemPrompt: visualizePrompt,
-      userPayload: context,
-    });
-
-    return response.json({ stage: 'visualize', ...result });
+    const result = await runPromptStage(promptTemplate, { context });
+    return response.json(result);
   } catch (error) {
-    return next(error);
+    return handleStageError('visualize', error, response, next);
   }
 };

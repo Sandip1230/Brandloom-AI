@@ -50,14 +50,3 @@ npm run dev
 ## Project Structure
 
 See `/docs/architecture.md`.
-
-## Team
-
-- [Name] — [role]
-- [Name] — [role]
-- [Name] — [role]
-- [Name] — [role]
-
-## License
-
-MIT

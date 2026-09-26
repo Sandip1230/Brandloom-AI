@@ -1,0 +1,1 @@
+module.exports = `Using the supplied brand context, propose typography, color mood, and imagery direction. Return only schema-valid JSON.\n\nContext: {{context}}`;

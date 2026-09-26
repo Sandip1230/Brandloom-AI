@@ -1,0 +1,1 @@
+module.exports = `Review the supplied brand context for clichés and generic patterns. Explain each finding and suggest a specific alternative. Return only schema-valid JSON.\n\nContext: {{context}}`;

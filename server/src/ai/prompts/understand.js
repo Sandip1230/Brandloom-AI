@@ -1,0 +1,1 @@
+module.exports = `Analyze the business idea below. Return structured JSON with the problem, target audience, constraints, and open questions. Do not invent facts.\n\nIdea: {{brief}}`;

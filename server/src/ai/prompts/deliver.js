@@ -1,0 +1,1 @@
+module.exports = `Assemble the supplied stages into a consistent, exportable brand kit. Preserve source facts and note unresolved gaps. Return only schema-valid JSON.\n\nContext: {{context}}`;

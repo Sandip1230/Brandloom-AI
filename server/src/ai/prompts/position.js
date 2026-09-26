@@ -1,0 +1,1 @@
+module.exports = `Using the supplied discovery context, define the category, differentiator, and value proposition. Return only schema-valid JSON.\n\nContext: {{context}}`;

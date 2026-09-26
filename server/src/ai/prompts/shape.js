@@ -1,0 +1,1 @@
+module.exports = `Using the supplied brand context, propose personality traits, naming directions, voice, and a tagline. Return only schema-valid JSON.\n\nContext: {{context}}`;

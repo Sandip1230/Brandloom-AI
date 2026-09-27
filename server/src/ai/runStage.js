@@ -37,6 +37,22 @@ function isTransientProviderError(error) {
       return error.message?.includes('AI provider request timed out') || false;
 }
 
+// Groq (and most OpenAI-compatible providers) put the required cool-down
+// directly in the 429 body, e.g. "Please try again in 24.66s". Waiting a
+// fixed 1.2s and retrying into the same rate limit just burns the retry, so
+// we parse the provider's own number and wait that long instead (capped so
+// we don't hang forever on a huge quota reset).
+function providerRetryDelayMs(error) {
+      const match = error.message?.match(/try again in\s+([\d.]+)\s*s/i);
+      if (!match) return null;
+      const seconds = Number(match[1]);
+      if (!Number.isFinite(seconds) || seconds <= 0) return null;
+      // Small buffer on top of the provider's own estimate, capped at 15s so a
+      // single retry (each side capped at 20s in client.js) never stalls the
+      // whole request past the frontend's own ~60s timeout.
+      return Math.min(Math.ceil(seconds * 1000) + 300, 15000);
+}
+
 function sleep(ms) {
       return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -76,8 +92,14 @@ async function runPromptStage(stageName, promptTemplate, vars, { retries = 1 } =
 
                   console.warn(`[runStage] "${stageName}" attempt ${attempt + 1} failed, retrying:`, error.message);
                   // Rate limits and momentary 5xx need a beat before retrying -
-                  // hammering immediately just gets rate-limited again.
-                  if (isTransientProviderError(error)) await sleep(1200);
+                  // hammering immediately just gets rate-limited again. Prefer
+                  // the provider's own "try again in Xs" figure when it gives
+                  // one (Groq always does for 429s); fall back to a flat 1.2s
+                  // for other transient errors (timeouts, 5xx without a hint).
+                  if (isTransientProviderError(error)) {
+                        const delay = providerRetryDelayMs(error) ?? 1200;
+                        await sleep(delay);
+                  }
             }
       }
       throw lastError;

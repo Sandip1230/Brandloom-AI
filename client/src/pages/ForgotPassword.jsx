@@ -101,7 +101,7 @@ export default function ForgotPassword() {
       highlight="password?"
       description="No worries. Enter the email on your account and we'll send you a 6-digit code to set a new one."
     >
-      <div className="w-full max-w-sm rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-8 shadow-xl">
+      <div className="w-full max-w-sm rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6 sm:p-8 shadow-xl">
         <div className="flex flex-col items-center text-center">
           <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[var(--accent-from)] to-[var(--accent-to)] text-2xl font-bold text-white shadow-lg">
             B
@@ -160,7 +160,7 @@ export default function ForgotPassword() {
                 value={code}
                 onChange={(event) => setCode(event.target.value.replace(/\D/g, ""))}
                 placeholder="123456"
-                className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface-2)] px-4 py-3 text-center text-lg tracking-[0.5em] text-[var(--text)] outline-none placeholder:tracking-normal placeholder:text-[var(--text-soft)] focus:border-[var(--accent-solid)]"
+                className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface-2)] px-4 py-3 text-center text-lg tracking-[0.3em] sm:tracking-[0.5em] text-[var(--text)] outline-none placeholder:tracking-normal placeholder:text-[var(--text-soft)] focus:border-[var(--accent-solid)]"
               />
             </div>
 

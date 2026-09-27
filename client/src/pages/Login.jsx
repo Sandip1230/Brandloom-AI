@@ -53,7 +53,7 @@ export default function Login() {
       highlight="Keep building."
       description="Sign in to continue turning your ideas into launch-ready brand systems — staged, structured and checked."
     >
-      <div className="w-full max-w-sm rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-8 shadow-xl">
+      <div className="w-full max-w-sm rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6 sm:p-8 shadow-xl">
         <div className="flex flex-col items-center text-center">
           <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[var(--accent-from)] to-[var(--accent-to)] text-2xl font-bold text-white shadow-lg">
             B

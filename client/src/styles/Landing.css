@@ -17,7 +17,9 @@
 .page {
     position: relative;
     min-height: 100vh;
+    min-height: 100dvh;
     width: 100%;
+    max-width: 100vw;
     background:
         radial-gradient(
             circle at 72% 48%,
@@ -35,7 +37,7 @@
             #020713 50%,
             #01050c 100%
         );
-    overflow: hidden;
+    overflow-x: hidden;
     color: white;
     font-family: "Inter", sans-serif;
 }
@@ -68,18 +70,20 @@
     padding: 0 48px;
     position: relative;
     z-index: 10;
+    flex-wrap: nowrap;
 }
 
 .logo {
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 25px;
+    font-size: clamp(19px, 2.4vw, 25px);
     font-weight: 700;
     letter-spacing: -0.7px;
     width: 30%;
     text-decoration: none;
     color: white;
+    white-space: nowrap;
 }
 
 .logo i {
@@ -91,7 +95,7 @@
 }
 
 .logo-star {
-    font-size: 35px;
+    font-size: clamp(26px, 3vw, 35px);
     line-height: 1;
     color: #d858ff;
     text-shadow:
@@ -103,8 +107,9 @@
 .nav-links {
     display: flex;
     justify-content: center;
-    gap: 30px;
+    gap: clamp(10px, 2vw, 30px);
     width: 44%;
+    flex-wrap: wrap;
 }
 
 .nav-links a {
@@ -128,11 +133,10 @@
     gap: 12px;
 }
 
-
 .login-btn,
 .start-btn {
     height: 42px;
-    padding: 0 21px;
+    padding: 0 clamp(14px, 2vw, 21px);
     border-radius: 11px;
     font-family: inherit;
     font-size: 13px;
@@ -141,6 +145,7 @@
     text-decoration: none;
     display: inline-flex;
     align-items: center;
+    white-space: nowrap;
 }
 
 .login-btn {
@@ -166,16 +171,38 @@
     margin-left: 7px;
 }
 
+/* Theme toggle button */
+.theme-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    border: 1px solid #29415f;
+    background: rgba(6, 15, 29, 0.9);
+    color: #e8eaf1;
+    cursor: pointer;
+}
+
+/* Mobile hamburger toggle (hidden by default on desktop) */
+.nav-toggle {
+    display: none;
+}
+
 /* =========================================
    HERO
 ========================================= */
 
 .hero {
     min-height: calc(100vh - 92px);
+    min-height: calc(100dvh - 92px);
     display: flex;
     position: relative;
     z-index: 2;
-    padding: 18px 53px 60px;
+    padding: 18px clamp(20px, 5vw, 53px) 60px;
+    flex-wrap: wrap;
 }
 
 .hero-left {
@@ -183,6 +210,7 @@
     padding-top: 5px;
     position: relative;
     z-index: 5;
+    min-width: 280px;
 }
 
 .ai-badge {
@@ -200,9 +228,10 @@
             rgba(12, 22, 43, 0.65)
         );
     color: #aab1c9;
-    font-size: 15px;
+    font-size: clamp(12px, 1.5vw, 15px);
     margin-top: -13px;
     box-shadow: 0 0 15px rgba(89, 79, 255, 0.08);
+    max-width: 100%;
 }
 
 .ai-badge span {
@@ -212,11 +241,12 @@
 
 h1 {
     margin: 19px 0 0;
-    font-size: clamp(50px, 5vw, 89px);
+    font-size: clamp(38px, 8vw, 89px);
     line-height: 0.99;
     letter-spacing: 1px;
     font-weight: 700;
     color: #f7f7fa;
+    word-break: break-word;
 }
 
 h1 span {
@@ -229,7 +259,7 @@ h1 span {
 .hero-description {
     margin-top: 20px;
     color: #a7acbb;
-    font-size: 18px;
+    font-size: clamp(14px, 1.8vw, 18px);
     line-height: 1.65;
     letter-spacing: -0.1px;
     max-width: 46ch;
@@ -237,13 +267,14 @@ h1 span {
 
 .hero-buttons {
     display: flex;
-    gap: 30px;
+    gap: clamp(14px, 3vw, 30px);
     margin-top: 35px;
+    flex-wrap: wrap;
 }
 
 .primary-btn {
     height: 57px;
-    padding: 0 31px;
+    padding: 0 clamp(20px, 3vw, 31px);
     border: none;
     border-radius: 13px;
     color: white;
@@ -257,6 +288,7 @@ h1 span {
     display: inline-flex;
     align-items: center;
     text-decoration: none;
+    white-space: nowrap;
 }
 
 .primary-btn span {
@@ -271,7 +303,7 @@ h1 span {
 
 .demo-btn {
     height: 57px;
-    padding: 0 27px;
+    padding: 0 clamp(18px, 3vw, 27px);
     border-radius: 13px;
     border: 1px solid #304d8a;
     color: #e8eaf1;
@@ -283,6 +315,7 @@ h1 span {
     display: inline-flex;
     align-items: center;
     text-decoration: none;
+    white-space: nowrap;
 }
 
 .play {
@@ -295,6 +328,7 @@ h1 span {
     border-radius: 50%;
     font-size: 8px;
     margin-right: 8px;
+    flex-shrink: 0;
 }
 
 .social-proof {
@@ -302,6 +336,7 @@ h1 span {
     align-items: center;
     gap: 17px;
     margin-top: 43px;
+    flex-wrap: wrap;
 }
 
 .avatars {
@@ -317,6 +352,7 @@ h1 span {
     background-size: cover;
     background-position: center;
     box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15);
+    flex-shrink: 0;
 }
 
 .avatar1 {
@@ -357,6 +393,7 @@ h1 span {
     width: 52%;
     min-height: 560px;
     position: relative;
+    min-width: 280px;
 }
 
 .blue-glow {
@@ -369,6 +406,7 @@ h1 span {
     background: #0877ff;
     filter: blur(95px);
     opacity: 0.34;
+    max-width: 60%;
 }
 
 .purple-glow {
@@ -381,6 +419,7 @@ h1 span {
     background: #9d20ff;
     filter: blur(90px);
     opacity: 0.28;
+    max-width: 60%;
 }
 
 .ribbon {
@@ -388,6 +427,7 @@ h1 span {
     border: 1px solid rgba(54, 115, 255, 0.7);
     border-radius: 50%;
     transform: rotate(-18deg);
+    max-width: 95%;
 }
 
 .ribbon-one {
@@ -468,6 +508,7 @@ h1 span {
         -12px 20px 35px rgba(0, 0, 0, 0.5),
         0 0 25px rgba(0, 107, 255, 0.45);
     z-index: 4;
+    max-width: 45vw;
 }
 
 .phone::before {
@@ -533,6 +574,7 @@ h1 span {
 .workflow-card {
     position: absolute;
     width: 250px;
+    max-width: 66vw;
     display: flex;
     align-items: flex-start;
     gap: 12px;
@@ -641,7 +683,7 @@ h1 span {
     z-index: 2;
     max-width: 1160px;
     margin: 0 auto;
-    padding: 0 58px 60px;
+    padding: 0 clamp(20px, 5vw, 58px) 60px;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 18px;
@@ -655,6 +697,7 @@ h1 span {
     border-radius: 14px;
     border: 1px solid rgba(102, 152, 202, 0.18);
     background: linear-gradient(150deg, rgba(20, 27, 48, 0.7), rgba(6, 12, 24, 0.6));
+    min-width: 0;
 }
 
 .stat-icon {
@@ -697,8 +740,7 @@ h1 span {
 }
 
 /* =========================================
-   PIPELINE SECTION (below hero — matches
-   the same visual language as the hero)
+   PIPELINE SECTION
 ========================================= */
 
 .pipeline-section {
@@ -706,11 +748,11 @@ h1 span {
     z-index: 2;
     max-width: 1160px;
     margin: 0 auto;
-    padding: 20px 58px 90px;
+    padding: 20px clamp(20px, 5vw, 58px) 90px;
 }
 
 .pipeline-section h2 {
-    font-size: clamp(28px, 3vw, 38px);
+    font-size: clamp(26px, 4vw, 38px);
     font-weight: 800;
     letter-spacing: -1px;
     color: #f7f7fa;
@@ -739,6 +781,7 @@ h1 span {
     background: linear-gradient(150deg, rgba(20, 27, 48, 0.7), rgba(6, 12, 24, 0.6));
     overflow: hidden;
     transition: border-color 0.3s, transform 0.3s;
+    min-width: 0;
 }
 
 .stage-card:hover {
@@ -791,7 +834,7 @@ h1 span {
     position: relative;
     z-index: 2;
     border-top: 1px solid rgba(102, 152, 202, 0.18);
-    padding: 26px 58px;
+    padding: 26px clamp(20px, 5vw, 58px);
     color: #727b90;
     font-size: 13px;
 }
@@ -838,13 +881,15 @@ h1 span {
     }
 }
 
+@media (max-width: 900px) {
+    .stage-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 @media (max-width: 750px) {
     .navbar {
         height: 75px;
-    }
-
-    .nav-links {
-        display: none;
     }
 
     .logo {
@@ -859,6 +904,44 @@ h1 span {
         display: none;
     }
 
+    /* Hamburger toggle appears, inline links become a dropdown panel */
+    .nav-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        flex-shrink: 0;
+        border-radius: 10px;
+        border: 1px solid #29415f;
+        background: rgba(6, 15, 29, 0.9);
+        color: white;
+        cursor: pointer;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 75px;
+        left: 0;
+        right: 0;
+        width: auto;
+        padding: 18px 24px;
+        gap: 16px;
+        background: rgba(4, 10, 20, 0.97);
+        border-bottom: 1px solid rgba(102, 152, 202, 0.28);
+        z-index: 20;
+    }
+
+    .nav-links.open a {
+        font-size: 14px;
+    }
+
     .hero {
         flex-direction: column;
         padding-top: 25px;
@@ -867,6 +950,7 @@ h1 span {
     .hero-left,
     .hero-right {
         width: 100%;
+        min-width: 0;
     }
 
     .hero-left {
@@ -884,6 +968,8 @@ h1 span {
 
     .hero-description {
         max-width: none;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .hero-buttons,
@@ -893,7 +979,9 @@ h1 span {
 
     .hero-right {
         height: 620px;
+        min-height: 0;
         margin-top: 30px;
+        overflow: hidden;
     }
 
     .phone {
@@ -912,5 +1000,165 @@ h1 span {
 
     .stage-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 560px) {
+    .page::before {
+        inset: 4px;
+        border-radius: 12px;
+    }
+
+    .navbar {
+        padding: 0 18px;
+    }
+
+    .logo {
+        font-size: 18px;
+        gap: 6px;
+    }
+
+    .logo-star {
+        font-size: 24px;
+    }
+
+    .start-btn {
+        height: 38px;
+        padding: 0 15px;
+        font-size: 12px;
+    }
+
+    .hero {
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-bottom: 40px;
+    }
+
+    h1 {
+        font-size: 38px;
+        letter-spacing: 0;
+    }
+
+    .hero-description {
+        font-size: 14px;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        width: 100%;
+        gap: 14px;
+    }
+
+    .primary-btn,
+    .demo-btn {
+        width: 100%;
+        justify-content: center;
+        height: 52px;
+    }
+
+    .social-proof {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .hero-right {
+        height: 480px;
+    }
+
+    .phone {
+        width: 140px;
+        height: 265px;
+        top: 40px;
+        left: 12%;
+    }
+
+    .phone-logo {
+        width: 44px;
+        height: 44px;
+        font-size: 32px;
+    }
+
+    .phone-title {
+        font-size: 18px;
+        margin-top: 16px;
+    }
+
+    .blue-glow,
+    .purple-glow {
+        width: 180px;
+        height: 180px;
+        filter: blur(70px);
+    }
+
+    .ribbon-one,
+    .ribbon-two {
+        width: 320px;
+        height: 100px;
+    }
+
+    .workflow-card {
+        width: 84vw;
+        max-width: 260px;
+        right: 4%;
+        padding: 11px 13px;
+    }
+
+    .understand-card {
+        top: 10px;
+    }
+
+    .position-card {
+        top: 110px;
+    }
+
+    .visualize-card {
+        top: 210px;
+    }
+
+    .deliver-card {
+        top: 310px;
+    }
+
+    .pipeline-section {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .pipeline-section h2 {
+        font-size: 26px;
+    }
+
+    .stat-card {
+        padding: 14px 16px;
+    }
+
+    .site-footer {
+        padding: 22px 20px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 380px) {
+    h1 {
+        font-size: 32px;
+    }
+
+    .phone {
+        width: 120px;
+        height: 225px;
+        left: 10%;
+    }
+
+    .workflow-card {
+        max-width: 220px;
+        padding: 9px 11px;
+    }
+
+    .card-copy span {
+        font-size: 13px;
+    }
+
+    .card-copy p {
+        font-size: 10.5px;
     }
 }

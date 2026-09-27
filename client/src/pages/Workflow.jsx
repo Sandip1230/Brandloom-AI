@@ -16,7 +16,7 @@ export default function Workflow() {
 
   return (
     <AppShell>
-      <div className="flex h-full flex-col px-6 py-6 sm:px-9">
+      <div className="flex h-full flex-col px-4 py-6 sm:px-9">
         <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--accent-solid)]">
           Presented with the support of Inkloom
         </span>
@@ -31,7 +31,7 @@ export default function Workflow() {
           From a rough idea to a complete brand system with the power of AI.
         </p>
 
-        <div className="mt-6 flex min-h-0 flex-1 items-start gap-8">
+        <div className="mt-6 flex min-h-0 flex-1 flex-col items-stretch gap-6 lg:flex-row lg:items-start lg:gap-8">
           <div className="flex min-h-0 min-w-0 flex-1 flex-col">
             <ProgressStepper
               currentStage={activeStage}
@@ -39,7 +39,7 @@ export default function Workflow() {
               onSelect={goToStage}
             />
 
-            <div className="scrollbar-hide relative mt-5 min-h-0 flex-1 overflow-y-auto rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-sm sm:p-8">
+            <div className="scrollbar-hide relative mt-5 min-h-0 flex-1 overflow-y-auto rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm sm:p-6 lg:p-8">
               {activeStage === "understand" && !brand.stageOutputs.understand && (
                 <div className="absolute right-6 top-6 hidden items-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--surface-2)] px-3 py-2 sm:flex">
                   <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[var(--accent-from)] to-[var(--accent-to)] text-white">
@@ -103,10 +103,12 @@ export default function Workflow() {
             </div>
           </div>
 
-          <BrandVisual />
+          <div className="w-full shrink-0 lg:w-auto">
+            <BrandVisual />
+          </div>
         </div>
 
-        <div className="mt-4 flex shrink-0 items-center justify-between text-[10px] uppercase tracking-[0.14em] text-[var(--text-soft)]">
+        <div className="mt-4 flex shrink-0 flex-wrap items-center justify-between gap-2 text-[10px] uppercase tracking-[0.14em] text-[var(--text-soft)]">
           <span>Brand Strategy • AI Design • Real Launch Assets</span>
           <span>Brandloom • Make Ideas Matter</span>
         </div>

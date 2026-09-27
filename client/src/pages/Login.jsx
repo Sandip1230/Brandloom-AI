@@ -9,11 +9,29 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
-  // No auth backend wired up yet — UI-only for now.
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    navigate("/workflow");
+    setError("");
+    setSubmitting(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Could not sign in. Try again.");
+
+      localStorage.setItem("brandloom-token", data.token);
+      navigate("/workflow");
+    } catch (submitError) {
+      setError(submitError.message);
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   function handleSkip() {
@@ -46,6 +64,12 @@ export default function Login() {
             Continue your journey. Great brands are built in stages.
           </p>
         </div>
+
+        {error && (
+          <p className="mt-4 rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-2.5 text-center text-sm text-rose-500">
+            {error}
+          </p>
+        )}
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
           <div>
@@ -106,9 +130,10 @@ export default function Login() {
 
           <button
             type="submit"
-            className="w-full rounded-xl bg-gradient-to-r from-[var(--accent-from)] to-[var(--accent-to)] py-3 text-sm font-semibold text-white shadow-md transition hover:opacity-90"
+            disabled={submitting}
+            className="w-full rounded-xl bg-gradient-to-r from-[var(--accent-from)] to-[var(--accent-to)] py-3 text-sm font-semibold text-white shadow-md transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            Sign in →
+            {submitting ? "Signing in…" : "Sign in →"}
           </button>
         </form>
 

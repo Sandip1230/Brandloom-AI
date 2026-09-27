@@ -4,6 +4,7 @@ module.exports = {
   position: require('./position'),
   shape: require('./shape'),
   visualize: require('./visualize'),
+  challengeDraft: require('./challengeDraft'),
   challenge: require('./challenge'),
   deliver: require('./deliver'),
 };

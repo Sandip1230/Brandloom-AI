@@ -84,7 +84,13 @@ export default function Workflow() {
               {activeStage === "challenge" && (
                 <StagePanel stageKey="challenge">
                   {(output) => (
-                    <ConsistencyChecker findings={output?.findings} consistent={output?.consistent} />
+                    <ConsistencyChecker
+                      findings={output?.findings}
+                      consistent={output?.consistent}
+                      score={output?.score}
+                      verdict={output?.verdict}
+                      draftFindingsCount={output?.draftFindingsCount}
+                    />
                   )}
                 </StagePanel>
               )}

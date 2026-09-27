@@ -2,16 +2,37 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import AuthSplitLayout from "../components/auth/AuthSplitLayout.jsx";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+
 export default function SignUp() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    navigate("/workflow");
+    setError("");
+    setSubmitting(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/auth/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Could not create account. Try again.");
+
+      localStorage.setItem("brandloom-token", data.token);
+      navigate("/workflow");
+    } catch (submitError) {
+      setError(submitError.message);
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -30,6 +51,12 @@ export default function SignUp() {
           <p className="mt-3 text-lg font-bold text-[var(--text)]">Create Account</p>
           <p className="mt-1 text-sm text-[var(--text-soft)]">Sign up to get started.</p>
         </div>
+
+        {error && (
+          <p className="mt-4 rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-2.5 text-center text-sm text-rose-500">
+            {error}
+          </p>
+        )}
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
           <div>
@@ -68,10 +95,10 @@ export default function SignUp() {
               <input
                 type={showPassword ? "text" : "password"}
                 required
-                minLength={6}
+                minLength={8}
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
-                placeholder="At least 6 characters"
+                placeholder="At least 8 characters"
                 className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface-2)] px-4 py-3 pr-10 text-sm text-[var(--text)] outline-none placeholder:text-[var(--text-soft)] focus:border-[var(--accent-solid)]"
               />
               <button
@@ -87,9 +114,10 @@ export default function SignUp() {
 
           <button
             type="submit"
-            className="w-full rounded-xl bg-gradient-to-r from-[var(--accent-from)] to-[var(--accent-to)] py-3 text-sm font-semibold text-white shadow-md transition hover:opacity-90"
+            disabled={submitting}
+            className="w-full rounded-xl bg-gradient-to-r from-[var(--accent-from)] to-[var(--accent-to)] py-3 text-sm font-semibold text-white shadow-md transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            Create account →
+            {submitting ? "Creating…" : "Create account →"}
           </button>
         </form>
 

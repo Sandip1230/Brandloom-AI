@@ -1,7 +1,7 @@
 // validate.js
 // Minimal, dependency-free schema checker. Each stage schema is a plain
 // object mapping field name -> expected type ('string' | 'string[]' |
-// 'boolean' | 'object' | 'object[]'). No external library needed for this small a shape.
+// 'boolean' | 'number' | 'object' | 'object[]'). No external library needed for this small a shape.
 
 function validateAgainstSchema(stageName, schema, data) {
   const errors = [];
@@ -20,6 +20,8 @@ function validateAgainstSchema(stageName, schema, data) {
 
     if (type === 'string' && typeof value !== 'string') {
       errors.push(`Field "${field}" must be a string.`);
+    } else if (type === 'number' && typeof value !== 'number') {
+      errors.push(`Field "${field}" must be a number.`);
     } else if (type === 'boolean' && typeof value !== 'boolean') {
       errors.push(`Field "${field}" must be a boolean.`);
     } else if (type === 'object' && (typeof value !== 'object' || Array.isArray(value))) {

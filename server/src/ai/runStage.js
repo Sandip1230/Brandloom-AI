@@ -23,6 +23,24 @@ function extractJson(text) {
       return JSON.parse(candidate.slice(start, end + 1));
 }
 
+// Pulls the HTTP status out of client.js's "AI provider request failed (429): ..."
+// style error messages, so we can tell a transient provider hiccup (rate limit,
+// momentary 5xx) apart from something retrying won't fix (bad auth, 400, etc).
+function providerStatus(error) {
+      const match = error.message?.match(/AI provider request failed \((\d+)\)/);
+      return match ? Number(match[1]) : null;
+}
+
+function isTransientProviderError(error) {
+      const status = providerStatus(error);
+      if (status === 429 || (status !== null && status >= 500)) return true;
+      return error.message?.includes('AI provider request timed out') || false;
+}
+
+function sleep(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 async function runPromptStage(stageName, promptTemplate, vars, { retries = 1 } = {}) {
       const client = createAIClient();
       const prompt = fillTemplate(promptTemplate, vars);
@@ -31,7 +49,7 @@ async function runPromptStage(stageName, promptTemplate, vars, { retries = 1 } =
       let lastError;
       for (let attempt = 0; attempt <= retries; attempt += 1) {
             const isRetry = attempt > 0;
-            const attemptPrompt = isRetry
+            const attemptPrompt = isRetry && !isTransientProviderError(lastError)
                   ? `${prompt}\n\nYour previous reply could not be used: ${lastError.message}\nRespond again with ONLY one valid JSON object matching the schema above - no markdown fences, no commentary, no text before or after it, and make sure every required field is present with the correct type.`
                   : prompt;
 
@@ -52,9 +70,14 @@ async function runPromptStage(stageName, promptTemplate, vars, { retries = 1 } =
                   const isRecoverable =
                         error.message?.includes('did not contain a JSON object') ||
                         error.message?.includes('Schema validation failed') ||
+                        isTransientProviderError(error) ||
                         error instanceof SyntaxError;
                   if (!isRecoverable || attempt === retries) throw error;
+
                   console.warn(`[runStage] "${stageName}" attempt ${attempt + 1} failed, retrying:`, error.message);
+                  // Rate limits and momentary 5xx need a beat before retrying -
+                  // hammering immediately just gets rate-limited again.
+                  if (isTransientProviderError(error)) await sleep(1200);
             }
       }
       throw lastError;

@@ -1,4 +1,5 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState, useRef } from "react";
 import ThemeToggle from "./ThemeToggle.jsx";
 
 const NAV_ITEMS = [
@@ -63,8 +64,46 @@ function NavIcon({ name }) {
   }
 }
 
+// Decodes the JWT payload (server/src/routes/auth.routes.js signs
+// { id, name, email }) without needing a library or a /me API call.
+function readUserFromToken() {
+  const token = localStorage.getItem("brandloom-token");
+  if (!token) return null;
+  try {
+    const payload = token.split(".")[1];
+    const decoded = JSON.parse(atob(payload.replace(/-/g, "+").replace(/_/g, "/")));
+    return { name: decoded.name || "Guest", email: decoded.email || "" };
+  } catch {
+    return null;
+  }
+}
+
 export default function Sidebar() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [user, setUser] = useState(() => readUserFromToken());
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  function handleLogout() {
+    localStorage.removeItem("brandloom-token");
+    setUser(null);
+    setMenuOpen(false);
+    navigate("/login", { replace: true });
+  }
+
+  const displayName = user?.name || "Guest";
+  const initial = displayName.charAt(0).toUpperCase();
 
   return (
     <aside className="flex h-full w-64 shrink-0 flex-col overflow-y-auto rounded-2xl border border-[var(--sidebar-border)] bg-[var(--sidebar-bg)] px-4 py-4 text-[var(--sidebar-text)] shadow-sm">
@@ -128,17 +167,45 @@ export default function Sidebar() {
         </Link>
       </div>
 
-      <div className="mt-3 flex shrink-0 items-center justify-between border-t border-[var(--sidebar-border)] pt-3">
-        <div className="flex items-center gap-2">
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white">
-            G
-          </span>
-          <div>
-            <p className="text-sm font-medium leading-tight text-white">Guest</p>
-            <p className="text-xs leading-tight text-[var(--sidebar-text-soft)]">Free Plan</p>
-          </div>
+      <div ref={menuRef} className="relative mt-3 shrink-0 border-t border-[var(--sidebar-border)] pt-3">
+        <div className="flex items-center justify-between">
+          <button
+            type="button"
+            onClick={() => setMenuOpen((prev) => !prev)}
+            className="flex items-center gap-2 rounded-lg px-1 py-1 text-left transition-colors hover:bg-white/5"
+          >
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white">
+              {initial}
+            </span>
+            <div>
+              <p className="text-sm font-medium leading-tight text-white">{displayName}</p>
+              <p className="text-xs leading-tight text-[var(--sidebar-text-soft)]">Free Plan</p>
+            </div>
+          </button>
+          <ThemeToggle />
         </div>
-        <ThemeToggle />
+
+        {menuOpen && (
+          <div className="absolute bottom-full left-0 mb-2 w-full rounded-lg border border-[var(--sidebar-border)] bg-[var(--sidebar-bg)] p-1.5 shadow-lg">
+            {user?.email && (
+              <p className="truncate px-2 py-1.5 text-xs text-[var(--sidebar-text-soft)]">
+                {user.email}
+              </p>
+            )}
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-sm text-rose-400 transition-colors hover:bg-rose-500/10"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <path d="M16 17l5-5-5-5" />
+                <path d="M21 12H9" />
+              </svg>
+              Log out
+            </button>
+          </div>
+        )}
       </div>
     </aside>
   );

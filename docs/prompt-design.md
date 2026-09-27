@@ -11,6 +11,6 @@ These match the schema files exactly:
 - **Shape:** `traits` (string[]), `traitsToAvoid` (string[]), `namingDirections` (string[]), `voice` (string), `tagline` (string)
 - **Visualize:** `typography` (string), `colorMood` (string), `imageryStyle` (string), `conceptsToAvoid` (string[])
 - **Challenge:** `findings` (object[] — `issue`, `before`, `after`, `rationale`), `consistent` (boolean)
-- **Deliver:** `summary` (string), `position` (object), `personality` (object), `visual` (object), `openGaps` (string[])
+- **Deliver:** `brandName` (string), `summary` (string), `position` (object), `personality` (object), `visual` (object), `launch` (object — `landingHeadline`, `onelinePitch`, `socialLaunchPost`), `openGaps` (string[])
 
 Prompts must distinguish user-provided facts from generated proposals, avoid inventing evidence, and retain uncertainty rather than presenting assumptions as facts.

@@ -1,5 +1,5 @@
-import { Routes, Route, Navigate, useParams } from "react-router-dom";
-import { useRef } from "react";
+import { Routes, Route, Navigate, useParams, useNavigate } from "react-router-dom";
+import { useRef, useEffect } from "react";
 import Landing from "./pages/Landing.jsx";
 import Login from "./pages/Login.jsx";
 import SignUp from "./pages/SignUp.jsx";
@@ -26,6 +26,21 @@ function NewWorkflowRedirect() {
   return <Navigate to={`/workflow/${idRef.current}`} replace />;
 }
 
+// Google/GitHub OAuth (server/src/routes/auth.routes.js) redirects here with
+// ?token=... after a successful login. Without this route the token had
+// nowhere to land - the app showed a blank page and the token was lost.
+function AuthCallback() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = new URLSearchParams(window.location.search).get("token");
+    if (token) localStorage.setItem("brandloom-token", token);
+    navigate("/workflow", { replace: true });
+  }, [navigate]);
+
+  return null;
+}
+
 export default function App() {
   return (
     <Routes>
@@ -33,12 +48,15 @@ export default function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/auth/callback" element={<AuthCallback />} />
       <Route path="/projects" element={<Projects />} />
       <Route path="/brand-kits" element={<BrandKits />} />
       <Route path="/templates" element={<Templates />} />
       <Route path="/community" element={<Community />} />
       <Route path="/workflow" element={<NewWorkflowRedirect />} />
       <Route path="/workflow/:projectId" element={<WorkflowRoute />} />
+      {/* Unknown paths used to render nothing - now they just go home */}
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }

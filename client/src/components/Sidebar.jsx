@@ -78,7 +78,7 @@ function readUserFromToken() {
   }
 }
 
-export default function Sidebar() {
+export default function Sidebar({ open = false, onClose = () => {} }) {
   const location = useLocation();
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -95,10 +95,17 @@ export default function Sidebar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Close the mobile drawer whenever the route changes (e.g. after tapping a nav link)
+  useEffect(() => {
+    onClose();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname]);
+
   function handleLogout() {
     localStorage.removeItem("brandloom-token");
     setUser(null);
     setMenuOpen(false);
+    onClose();
     navigate("/login", { replace: true });
   }
 
@@ -106,16 +113,35 @@ export default function Sidebar() {
   const initial = displayName.charAt(0).toUpperCase();
 
   return (
-    <aside className="flex h-full w-64 shrink-0 flex-col overflow-y-auto rounded-2xl border border-[var(--sidebar-border)] bg-[var(--sidebar-bg)] px-4 py-4 text-[var(--sidebar-text)] shadow-sm">
+    <aside
+      className={
+        "fixed inset-y-0 left-0 z-40 flex h-full w-72 max-w-[85vw] shrink-0 flex-col overflow-y-auto rounded-2xl border border-[var(--sidebar-border)] bg-[var(--sidebar-bg)] px-4 py-4 text-[var(--sidebar-text)] shadow-2xl transition-transform duration-300 ease-in-out " +
+        (open ? "translate-x-0" : "-translate-x-[110%]") +
+        " md:static md:z-auto md:h-full md:w-64 md:max-w-none md:translate-x-0 md:shadow-sm"
+      }
+    >
       <div className="flex items-center gap-2 px-2">
         <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[var(--accent-from)] to-[var(--accent-to)] text-sm font-bold text-white">
           B
         </span>
         <span className="text-lg font-semibold text-white">Brandloom</span>
+
+        {/* Mobile-only close button for the drawer */}
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close menu"
+          className="ml-auto flex h-8 w-8 items-center justify-center rounded-lg text-[var(--sidebar-text-soft)] transition-colors hover:bg-white/5 hover:text-white md:hidden"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M6 6l12 12M18 6 6 18" />
+          </svg>
+        </button>
       </div>
 
       <Link
         to="/workflow"
+        onClick={onClose}
         style={{ backgroundImage: "var(--btn-gradient)" }}
         className="mt-5 flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-white shadow-[0_6px_18px_-6px_rgba(124,58,237,0.6)] transition-opacity hover:opacity-90"
       >
@@ -132,6 +158,7 @@ export default function Sidebar() {
             <Link
               key={item.label}
               to={item.to}
+              onClick={onClose}
               className={
                 "flex items-center gap-3 rounded-lg px-3 py-2 text-left text-sm transition-colors " +
                 (isActive
@@ -160,6 +187,7 @@ export default function Sidebar() {
         </p>
         <Link
           to="/templates"
+          onClick={onClose}
           className="mt-3 flex items-center justify-center gap-1.5 rounded-lg border border-amber-400/50 px-3 py-2 text-xs font-medium text-white transition-colors hover:border-amber-300"
         >
           Explore Templates
